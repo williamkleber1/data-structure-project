@@ -1,7 +1,7 @@
-FILES = fila/fila.c  fila/fila.h fila/main.c
+FILES = fila/queue.c  fila/queue.h fila/main.c
 
 compile:
-	gcc $(FILES) -o main -lcunit
+	gcc -Wall $(FILES) -o main -lcunit
 
 clean:
 	rm -f main
