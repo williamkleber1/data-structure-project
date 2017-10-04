@@ -64,7 +64,7 @@ int compress(unsigned char *bytes_file, long int SIZE_FILE)
    //Seta o byte 2 com o resto do tamanho da arvore
     byte2 = size_tree;
 
-     printf("%d   arvore %d lixo \n",size_tree, trash );
+    printf("Arvore: %d\nLixo: %d\n", size_tree, trash );
   //move os bits do lixo para os três primeiros bits da variavel trash
     trash = (trash<<5);
 

@@ -11,10 +11,10 @@ void write_new_file(huff_node *tree_bytes,FILE *dest_file,long int SIZE_FILE,uns
     long int i ;
     huff_node* aux_tree = tree_bytes;
    
-    printf("SIZE FILE: %ld\n",SIZE_FILE );
+    //printf("SIZE FILE: %ld\n",SIZE_FILE );
     for (i = 0; i < SIZE_FILE-1; i++)
     {
-         printf("to aqui funcao write\n");
+         //printf("to aqui funcao write\n");
         aux_tree = write_byte(tree_bytes,aux_tree,dest_file,compressed_file[i]);        
     }
     last_byte(tree_bytes, aux_tree, dest_file,compressed_file[SIZE_FILE - 1],  trash);
@@ -29,24 +29,24 @@ huff_node* write_byte(huff_node *tree_bytes, huff_node *aux_tree,FILE *dest_file
    int count = 8;
     while( count > 0 )
     {
-        printf("Count1: %d\n", count);
-        printf("to aqui funcao byte\n");
+        //printf("Count1: %d\n", count);
+        //printf("to aqui funcao byte\n");
         count--;
-        printf("Count2: %d\n", count);
+        //printf("Count2: %d\n", count);
         if ( seted_bit(byte , count) )
         {     // se o bit nao estiver setado
-            printf("if seted_bit\n");
+            //printf("if seted_bit\n");
             aux_tree = aux_tree->right;
         }                  //vai para a esquerda
         else
         {                                         //se tiver  
-            printf("else\n");               
+            //printf("else\n");               
              aux_tree = aux_tree->left;                   //vai para a direita
         }
 
         if(is_leaf(aux_tree))        //se for uma folha
         {
-            printf("is_leaf");
+            //printf("is_leaf");
             fprintf(dest_file ,"%c",aux_tree->item);  //escreve o conteudo do no no novo dest_file
             aux_tree = tree_bytes;
         }                               
@@ -54,7 +54,7 @@ huff_node* write_byte(huff_node *tree_bytes, huff_node *aux_tree,FILE *dest_file
          
     }
 //    printf("Count: %d\n", count);
-    printf("return\n");
+    //printf("return\n");
     return aux_tree;
 }
 
@@ -63,7 +63,7 @@ void last_byte(huff_node *tree_bytes, huff_node *aux_tree,FILE *dest_file,unsign
 	int count = 8;
  	while( count > trash )
  	{
-         printf("to aqui funcao last\n");
+         //printf("to aqui funcao last\n");
         count --;
         if ( seted_bit(last , count) )     // se o bit nao estiver setado
             aux_tree = aux_tree->right ;                  //vai para a esquerda
@@ -72,7 +72,7 @@ void last_byte(huff_node *tree_bytes, huff_node *aux_tree,FILE *dest_file,unsign
 
  		if(is_leaf( aux_tree ) )		 //se for uma folha
     	{
-            printf("%c",aux_tree->item );
+            //printf("%c",aux_tree->item );
     		fprintf(dest_file ,"%c",aux_tree->item);  //escreve o conteudo do no no novo dest_file
     		aux_tree = tree_bytes;
     	}                               
@@ -113,7 +113,7 @@ int descompress(unsigned char *bytes_file, long int size_file)
 	create_huff_tree(&tree_of_bytes,bytes_tree);
 
 	//print(tree_of_bytes);
-	printf("Lixo %d\nTamanho %d\n\n", trash, size_tree );
+	printf("Arvore: %d\nLixo: %d\n", size_tree, trash );
 
 	printf("digite o nome do novo arquivo\n" );
 
