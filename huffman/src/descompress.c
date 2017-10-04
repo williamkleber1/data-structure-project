@@ -6,21 +6,18 @@ int seted_bit(unsigned char c, int i)
 	return mask & c;
 }
 
-void write_new_file(huff_node **tree_bytes,FILE *dest_file,long int SIZE_FILE,unsigned char *compressed_file,int *trash)
+void write_new_file(huff_node *tree_bytes,FILE *dest_file,long int SIZE_FILE,unsigned char *compressed_file,int trash)
 {
     long int i ;
-    huff_node* aux_tree = *tree_bytes;
+    huff_node* aux_tree = tree_bytes;
    
-    printf("%ld\n",SIZE_FILE );
-    for (i = 0; i < SIZE_FILE; i++)
+    printf("SIZE FILE: %ld\n",SIZE_FILE );
+    for (i = 0; i < SIZE_FILE-1; i++)
     {
          printf("to aqui funcao write\n");
-       /*if (i < (SIZE_FILE -1))
-            aux_tree = write_byte(tree_bytes,aux_tree,dest_file,compressed_file[i]);
-       else*/
-            last_byte(&(*tree_bytes), &(*aux_tree), dest_file,compressed_file[SIZE_FILE - 1],  trash);
-        
+        aux_tree = write_byte(tree_bytes,aux_tree,dest_file,compressed_file[i]);        
     }
+    last_byte(tree_bytes, aux_tree, dest_file,compressed_file[SIZE_FILE - 1],  trash);
 
 }
  
@@ -30,44 +27,54 @@ void write_new_file(huff_node **tree_bytes,FILE *dest_file,long int SIZE_FILE,un
 huff_node* write_byte(huff_node *tree_bytes, huff_node *aux_tree,FILE *dest_file,unsigned char byte)
 {
    int count = 8;
-    while( count > 0 );
+    while( count > 0 )
     {
+        printf("Count1: %d\n", count);
         printf("to aqui funcao byte\n");
-        count --;
-        if ( seted_bit(byte , count) )     // se o bit nao estiver setado
-            aux_tree = aux_tree->right ;                  //vai para a esquerda
-        else                                             //se tiver                 
+        count--;
+        printf("Count2: %d\n", count);
+        if ( seted_bit(byte , count) )
+        {     // se o bit nao estiver setado
+            printf("if seted_bit\n");
+            aux_tree = aux_tree->right;
+        }                  //vai para a esquerda
+        else
+        {                                         //se tiver  
+            printf("else\n");               
              aux_tree = aux_tree->left;                   //vai para a direita
+        }
 
         if(is_leaf(aux_tree))        //se for uma folha
         {
-            printf("%c",aux_tree->item );
+            printf("is_leaf");
             fprintf(dest_file ,"%c",aux_tree->item);  //escreve o conteudo do no no novo dest_file
             aux_tree = tree_bytes;
         }                               
         
          
     }
+//    printf("Count: %d\n", count);
+    printf("return\n");
     return aux_tree;
 }
 
-void last_byte(huff_node **tree_bytes, huff_node **aux_tree,FILE *dest_file,unsigned char last, int *trash)
+void last_byte(huff_node *tree_bytes, huff_node *aux_tree,FILE *dest_file,unsigned char last, int trash)
 {
 	int count = 8;
- 	while( count > *trash );
+ 	while( count > trash )
  	{
          printf("to aqui funcao last\n");
         count --;
         if ( seted_bit(last , count) )     // se o bit nao estiver setado
-            *aux_tree = (*aux_tree)->right ;                  //vai para a esquerda
+            aux_tree = aux_tree->right ;                  //vai para a esquerda
         else                                             //se tiver                 
-            *aux_tree = (*aux_tree)->left;                   //vai para a direita
+            aux_tree = aux_tree->left;                   //vai para a direita
 
- 		if(is_leaf( *aux_tree ) )		 //se for uma folha
+ 		if(is_leaf( aux_tree ) )		 //se for uma folha
     	{
-            printf("%c",(*aux_tree)->item );
-    		fprintf(dest_file ,"%c",(*aux_tree)->item);  //escreve o conteudo do no no novo dest_file
-    		*aux_tree = *tree_bytes;
+            printf("%c",aux_tree->item );
+    		fprintf(dest_file ,"%c",aux_tree->item);  //escreve o conteudo do no no novo dest_file
+    		aux_tree = tree_bytes;
     	}                               
     	
      
@@ -116,7 +123,7 @@ int descompress(unsigned char *bytes_file, long int size_file)
 
 	FILE* dest_file = fopen(file_name,"w");
 
-	write_new_file(&tree_of_bytes, dest_file, size_file -(size_tree -2), bytes_file+(size_tree +2), &trash);
+	write_new_file(tree_of_bytes, dest_file, size_file -(size_tree -2), bytes_file+(size_tree +2), trash);
 	
 
 

@@ -1,5 +1,5 @@
 #include "../inc/huffman_tree.h"
-
+#include "../inc/compress.h"
 
 //função para apagar a arvore
 void free_tree(huff_node *bt)
@@ -26,10 +26,7 @@ void print(huff_node *bt)
 //function to check if node is leaf
 int is_leaf(huff_node *bt)
 {
-	if(bt->left == NULL && bt->right == NULL)
-		return 1;
-
-	return 0;
+	return (bt->left == NULL && bt->right == NULL);
 }
 
 /* function to print huffman tree in the file*/
