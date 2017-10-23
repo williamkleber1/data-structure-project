@@ -10,27 +10,24 @@ typedef struct _huff_node huff_node;
 
 typedef struct _queue queue;
 
-struct _huff_node 
-{
-	long int frequency;
-	unsigned char item;
-	huff_node *next;
-	huff_node *left;
-	huff_node *right;
-};
-
-struct _queue
-{
-	huff_node *first;
-	huff_node *last;
-	int size;
-
-};
-
-
 huff_node* create_node(unsigned char item,long int size, huff_node* left,huff_node* right);
 
+unsigned char get_item(huff_node *node);
+
+long int get_frequency(huff_node *node);
+
+huff_node* get_next(huff_node *node);
+
+huff_node* get_left(huff_node *node);
+
+huff_node* get_right(huff_node *node);
+
+int is_leaf(huff_node *bt);
+
 queue* create_queue();
+
+// adiciona um elemento no final de uma lista
+void add_list(huff_node **lista, char value);
 
 void enpqueue_node(queue *queue, huff_node* newNode);
 

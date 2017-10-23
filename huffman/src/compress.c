@@ -1,40 +1,23 @@
 #include "../inc/compress.h"
 
-
-
-
-void add_list(huff_node **lista, char value)
-{
-    if( (*lista) == NULL)
-    {
-        (*lista) = create_node(value,0,NULL,NULL);
-        return;
-    }
-    add_list(&(*lista)->next, value);
-}
-
-
 int compress(unsigned char *bytes_file, long int SIZE_FILE)
 {
     int i; 
-	huff_node *tree_of_bytes = huffman_tree(bytes_file, SIZE_FILE);   
+	huff_node *tree_of_bytes = huffman_tree(bytes_file, SIZE_FILE);
     if(tree_of_bytes == NULL) //se der erro ao montar a arvore
         return 0;             //retorna 0
 
     huff_node *table[256];    //declaro um array de nodes, para salvar o mapeamento dos bytes
     for (i = 0; i < 256; i++)
-    {
         table[i] = NULL;
-    }
 
-    char* empty_string = (char*)calloc(17, sizeof(char)); //String vazia com o tamanho máximo de bits que um binário de huffman teria.
+	 //String vazia com o tamanho máximo de bits que um binário de huffman teria.
+    char* empty_string = (char*)calloc(17, sizeof(char));
 
     maps_table(tree_of_bytes, table, "", empty_string);   
 
-
     //apaga a string usada para mapear
     free(empty_string);
-
 
     int size_tree = 0, trash = 0;
     //abro um arquivo em modo de escrita
@@ -52,7 +35,7 @@ int compress(unsigned char *bytes_file, long int SIZE_FILE)
     free_tree(tree_of_bytes);
 
     //criamos uma variavel que vai receber o tamanho do  lixo
-    trash = write_in_file(bytes_file, SIZE_FILE, new_file, table);
+    trash = write_compressed_file(bytes_file, SIZE_FILE, new_file, table);
 
     //volta para o inicio do arquivo para escrever o cabeçalho
     rewind(new_file);
@@ -69,8 +52,7 @@ int compress(unsigned char *bytes_file, long int SIZE_FILE)
     trash = (trash<<5);
 
   //byte1 recebe o resultado da operação  byte1 | trash
-    byte1 |= trash;
-
+     byte1 |= trash;
 
     //reescreve o cabeçalho do arquivo
      putc(byte1, new_file);

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../inc/queue.h"
 #include "../inc/compress.h"
 #include "../inc/descompress.h"
 

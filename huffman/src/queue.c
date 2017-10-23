@@ -1,5 +1,22 @@
 #include "../inc/queue.h"
 
+struct _huff_node 
+{
+    long int frequency;
+    unsigned char item;
+    huff_node *next;
+    huff_node *left;
+    huff_node *right;
+};
+
+struct _queue
+{
+    huff_node *first;
+    huff_node *last;
+    int size;
+
+};
+
 huff_node* create_node(unsigned char item,long int size, huff_node* left,huff_node* right)
 {
 	huff_node *aux =(huff_node*) malloc(sizeof(huff_node));
@@ -11,6 +28,40 @@ huff_node* create_node(unsigned char item,long int size, huff_node* left,huff_no
 	return aux;
 }
 
+
+unsigned char get_item(huff_node *node)
+{
+    return (unsigned char)node->item;
+}
+
+long int get_frequency(huff_node *node)
+{
+    return node->frequency;
+}
+
+
+huff_node* get_next(huff_node *node)
+{
+    return node->next;
+}
+
+huff_node* get_left(huff_node *node)
+{
+    return node->left;
+}
+
+huff_node* get_right(huff_node *node)
+{
+    return node->right;
+}
+
+//function to check if node is leaf
+int is_leaf(huff_node *bt)
+{
+    return (get_left(bt) == NULL && get_right(bt) == NULL);
+}
+
+
 queue* create_queue()
 {
     queue *aux = (queue*) malloc(sizeof(queue));
@@ -18,6 +69,15 @@ queue* create_queue()
     aux->last = NULL;
     aux -> size = 0;
     return aux;
+}
+
+
+void add_list(huff_node **lista, char value)
+{
+    if((*lista) == NULL)
+        (*lista) = create_node(value,0,NULL,NULL);
+    else
+        add_list(&(*lista)->next, value);
 }
 
 
@@ -79,7 +139,7 @@ unsigned char dequeue(queue *n_queue)
 
 int tam(huff_node* a, huff_node* b)
 {
-    int i =0;
+    long int i =0;
     if(a != NULL)
         i += a->frequency;
     if(b != NULL)
