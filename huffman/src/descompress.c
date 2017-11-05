@@ -1,5 +1,7 @@
 #include "../inc/descompress.h"
 
+
+
 int descompress(unsigned char *bytes_file, long int size_file)
 {
 	/*separamos os bytes do cabeçalho
@@ -19,21 +21,17 @@ int descompress(unsigned char *bytes_file, long int size_file)
 	size_tree = (size_tree << 8);
 	size_tree |= byte2;
 
-	//verificamos se é possivel montar a arvore
-	if(size_tree <= 0 ) return -1;
-
-	//fila para guardar os bytes que formam a arvore
+	//array para guardar os bytes que formam a arvore
     queue *bytes_tree = create_queue();
 	long int indice;
 
-	//loop para copiar os bytes da arvore em uma fila
+	//loop para copiar os bytes da arvore em um novo array
 	for (indice = 2 ; indice < size_tree + 2; indice++)
 		enqueue_last(bytes_tree, bytes_file[indice]); //enfileiro os bytes da arvore
     
-	huff_node *tree_of_bytes = create_huff_tree( bytes_tree);
+    //gero a arvore do arquivo compactado
+	huff_node *tree_of_bytes = create_huff_tree(bytes_tree);
 
-	//verificamos se a arvore foi criada
-	if(tree_of_bytes == NULL) return 0;
 
 	//print(tree_of_bytes);
 	printf("Arvore: %d\nLixo: %d\n", size_tree, trash );
@@ -48,7 +46,11 @@ int descompress(unsigned char *bytes_file, long int size_file)
 
 	write_descompressed_file(tree_of_bytes, dest_file, size_file -(size_tree -2), bytes_file+(size_tree +2), trash);
 
+    fclose(dest_file);
+	
     return 1;
 }
+
+
 
  

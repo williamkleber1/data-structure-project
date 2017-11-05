@@ -3,7 +3,12 @@ DEPS = inc/queue.h inc/descompress.h inc/compress.h inc/huffman_tree.h
 
 
 compile:
-	gcc -Wall $(OBJS) $(DEPS) -o main -lm
+	gcc $(OBJS) $(DEPS) -o main -lm
+
+test:
+	gcc src/file.c -o file
 
 clean:
 	rm -f main
+	rm -f file
+

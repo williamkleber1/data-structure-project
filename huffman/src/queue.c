@@ -3,7 +3,7 @@
 struct _huff_node 
 {
     long int frequency;
-    unsigned char item;
+    void *item;
     huff_node *next;
     huff_node *left;
     huff_node *right;
@@ -17,10 +17,14 @@ struct _queue
 
 };
 
+
 huff_node* create_node(unsigned char item,long int size, huff_node* left,huff_node* right)
-{
-	huff_node *aux =(huff_node*) malloc(sizeof(huff_node));
-	aux->item = item;
+{   
+    unsigned char *n_item = (unsigned char*) malloc(sizeof(unsigned char));
+    *n_item = item;
+
+    huff_node *aux =(huff_node*) malloc(sizeof(huff_node));
+	aux->item = n_item;
 	aux->frequency = size;
 	aux->left = left;
 	aux->right = right;
@@ -28,17 +32,26 @@ huff_node* create_node(unsigned char item,long int size, huff_node* left,huff_no
 	return aux;
 }
 
+queue* create_queue()
+{
+    queue *aux = (queue*) malloc(sizeof(queue));
+    aux -> first = NULL;
+    aux->last = NULL;
+    aux -> size = 0;
+    return aux;
+}
+
 
 unsigned char get_item(huff_node *node)
 {
-    return (unsigned char)node->item;
+    unsigned char *aux = (unsigned char*) node->item;
+   return *aux;  
 }
 
 long int get_frequency(huff_node *node)
 {
     return node->frequency;
 }
-
 
 huff_node* get_next(huff_node *node)
 {
@@ -55,30 +68,17 @@ huff_node* get_right(huff_node *node)
     return node->right;
 }
 
-//function to check if node is leaf
-int is_leaf(huff_node *bt)
-{
-    return (get_left(bt) == NULL && get_right(bt) == NULL);
-}
-
-
-queue* create_queue()
-{
-    queue *aux = (queue*) malloc(sizeof(queue));
-    aux -> first = NULL;
-    aux->last = NULL;
-    aux -> size = 0;
-    return aux;
-}
-
 
 void add_list(huff_node **lista, char value)
 {
-    if((*lista) == NULL)
+    if( (*lista) == NULL)
+    {
         (*lista) = create_node(value,0,NULL,NULL);
-    else
-        add_list(&(*lista)->next, value);
+        return;
+    }
+    add_list(&(*lista)->next, value);
 }
+
 
 
 void enpqueue_node(queue *queue, huff_node* newNode)
@@ -131,7 +131,7 @@ unsigned char dequeue(queue *n_queue)
 {
     huff_node *aux = n_queue->first;
     n_queue->first = aux->next;
-    unsigned char a = aux->item;
+    unsigned char a = get_item(aux);
     free(aux);
     n_queue->size--;
     return a;
@@ -139,7 +139,7 @@ unsigned char dequeue(queue *n_queue)
 
 int tam(huff_node* a, huff_node* b)
 {
-    long int i =0;
+    int i =0;
     if(a != NULL)
         i += a->frequency;
     if(b != NULL)
