@@ -34,13 +34,13 @@ int descompress(unsigned char *bytes_file, long int size_file)
 
 
 	//print(tree_of_bytes);
-	printf("Arvore: %d\nLixo: %d\n", size_tree, trash );
+	//printf("Arvore: %d\nLixo: %d\n", size_tree, trash );
 
-	printf("digite o nome do novo arquivo\n" );
-
+	printf("Digite o nome do arquivo descompactado: " );
 	char file_name[100];
 	scanf("%s",file_name);
 	getchar();
+	printf("\n");
 
 	FILE* dest_file = fopen(file_name,"w");
 
