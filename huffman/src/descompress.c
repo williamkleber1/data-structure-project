@@ -40,14 +40,14 @@ int descompress(unsigned char *bytes_file, long int size_file)
 	char file_name[100];
 	scanf("%s",file_name);
 	getchar();
-	printf("\n");
-
 	FILE* dest_file = fopen(file_name,"w");
 
 	write_descompressed_file(tree_of_bytes, dest_file, size_file -(size_tree -2), bytes_file+(size_tree +2), trash);
 
     fclose(dest_file);
 	
+    printf("\nDescompressao concluida.\n\n");
+
     return 1;
 }
 
