@@ -12,42 +12,44 @@ int main()
 	
 	FILE *file_user; //ponteiros para o arquivo compresso, eo novo arquivo
 	char arquivo[100]; // string para pegar o nome do arquivo
-	printf("digite o nome do arquivo\n");
+	printf("Digite o nome do arquivo: ");
 	scanf("%s",arquivo);
     getchar();
-	file_user = fopen(arquivo,"r");//abre o arquivo em modo de leitura
+    file_user = fopen(arquivo,"r");//abre o arquivo em modo de leitura
 
 	if(file_user == NULL)
 	{
-		printf("erro ao abrir o arquivo\n");
+		printf("\nErro ao abrir o arquivo.\n");
 		return 0;
 	}
 
+	printf("\nFazendo a leitura...\n");
   
 	fseek(file_user, 0, SEEK_END);     // coloco o cursor no fim do arquivo
-	long int SIZE_FILE = ftell(file_user);     // ftell retorna o a posição do cursor, neste caso calculo o tamanho dos bytes compressos. 
+	long int size_file = ftell(file_user);     // ftell retorna o a posição do cursor, neste caso calculo o tamanho dos bytes compressos. 
 
     fseek(file_user, 0, SEEK_SET);                   // volta o cursor para o inicio dos bytes
-    unsigned char *bytes_file = (unsigned char*) malloc(SIZE_FILE * sizeof(unsigned char));
+    unsigned char *bytes_file = (unsigned char*) malloc(size_file * sizeof(unsigned char));
     // aloca um array do tamanho da quantidade de bytes compactado
-    fread(bytes_file, sizeof(char), SIZE_FILE, file_user);  // coloca os bytes compressos no array alocado acima
+    fread(bytes_file, sizeof(char), size_file, file_user);  // coloca os bytes compressos no array alocado acima
     
-	printf("terminado quantidade de bytes %ld\n",SIZE_FILE);
     fclose(file_user);           // fecha o arquivo
 	
     system("clear");
-
-    printf("digite '1' para compactar ou '2' para descompactar\n");
+    printf("Arquivo carregado com sucesso.\n");
+    printf("Escolha uma das opcoes abaixo:\n");
+    printf("1 - Compactar\n");
+    printf("2 - Descompactar\n\n");
     int option;
     scanf("%d",&option);
 
     if(option == 1)
-        compress(bytes_file, SIZE_FILE);
+        compress(bytes_file, size_file);
 
     else if(option == 2)
-        descompress(bytes_file,SIZE_FILE);
+        descompress(bytes_file,size_file);
 
-    else printf("vlw flw\n");
+    else printf("Opcao invalida.");
 
 
     free(bytes_file);
