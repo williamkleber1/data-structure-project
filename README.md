@@ -2,7 +2,6 @@
 
 ## Alunos:
 
-* Jean Carlos
 * Marcelo Lima
 * Victor Hugo de Lima Araújo
 * William Kleber
