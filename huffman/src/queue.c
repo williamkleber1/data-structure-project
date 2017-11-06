@@ -168,12 +168,12 @@ huff_node* create_tree_of_queue(queue *queue)
    return aux;
 }
 
-huff_node* huffman_tree(unsigned char *array, long int SIZE_FILE)
+huff_node* huffman_tree(unsigned char *array, long int size_file)
 {
 	long int frequency[256] = {0} , i;
 	
 	
-	for(i = 0 ; i < SIZE_FILE ; i++)
+	for(i = 0 ; i < size_file ; i++)
 		++frequency[array[i]];
 
 	queue *frequency_bytes = create_queue();
