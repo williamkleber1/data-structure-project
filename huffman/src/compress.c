@@ -2,10 +2,10 @@
 
 
 
-int compress(unsigned char *bytes_file, long int SIZE_FILE)
+int compress(unsigned char *bytes_file, long int size_file)
 {
     int i; 
-	huff_node *tree_of_bytes = huffman_tree(bytes_file, SIZE_FILE);   
+	huff_node *tree_of_bytes = huffman_tree(bytes_file, size_file);   
     if(tree_of_bytes == NULL) //se der erro ao montar a arvore
         return 0;             //retorna 0
 
@@ -40,7 +40,7 @@ int compress(unsigned char *bytes_file, long int SIZE_FILE)
     free_tree(tree_of_bytes);
 
     //criamos uma variavel que vai receber o tamanho do  lixo
-    trash = write_in_file(bytes_file, SIZE_FILE, new_file, table);
+    trash = write_in_file(bytes_file, size_file, new_file, table);
 
     //volta para o inicio do arquivo para escrever o cabeçalho
     rewind(new_file);
